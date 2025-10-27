@@ -47,6 +47,9 @@ namespace Service.Services
                 throw new InvalidOperationException($"Vehicle part with serial number {createVehiclePartDto.SerialNumber} already exists.");
 
             var vehiclePart = _mapper.Map<VehiclePart>(createVehiclePartDto);
+            vehiclePart.CreatedAt = DateTime.UtcNow;
+            vehiclePart.IsActive = true;
+
             var createdVehiclePart = await _unitOfWork.VehicleParts.AddAsync(vehiclePart);
             return _mapper.Map<VehiclePartDto>(createdVehiclePart);
         }

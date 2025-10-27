@@ -37,6 +37,9 @@ namespace Service.Services
                 throw new KeyNotFoundException($"Part with ID {createInventoryDto.PartId} not found.");
 
             var inventory = _mapper.Map<PartInventory>(createInventoryDto);
+            inventory.CreatedAt = DateTime.UtcNow;
+            inventory.IsActive = true;
+
             var createdInventory = await _unitOfWork.PartInventories.AddAsync(inventory);
             return _mapper.Map<PartInventoryDto>(createdInventory);
         }

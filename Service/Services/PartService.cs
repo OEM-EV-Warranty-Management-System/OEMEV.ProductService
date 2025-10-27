@@ -32,6 +32,9 @@ namespace Service.Services
         public async Task<PartDto> CreatePartAsync(CreatePartDto createPartDto)
         {
             var part = _mapper.Map<Part>(createPartDto);
+            part.CreatedAt = DateTime.UtcNow;
+            part.IsActive = true;
+
             var createdPart = await _unitOfWork.Parts.AddAsync(part);
             return _mapper.Map<PartDto>(createdPart);
         }

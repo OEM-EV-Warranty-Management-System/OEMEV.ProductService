@@ -43,6 +43,9 @@ namespace Service.Services
                 throw new InvalidOperationException($"Vehicle with VIN {createVehicleDto.Vin} already exists.");
 
             var vehicle = _mapper.Map<Vehicle>(createVehicleDto);
+            vehicle.CreatedAt = DateTime.UtcNow;
+            vehicle.IsActive = true;
+                
             var createdVehicle = await _unitOfWork.Vehicles.AddAsync(vehicle);
             return _mapper.Map<VehicleDto>(createdVehicle);
         }
