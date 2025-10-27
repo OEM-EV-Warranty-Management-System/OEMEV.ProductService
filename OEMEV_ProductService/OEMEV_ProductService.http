@@ -1,0 +1,6 @@
+@OEMEV_ProductService_HostAddress = http://localhost:5014
+
+GET {{OEMEV_ProductService_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
