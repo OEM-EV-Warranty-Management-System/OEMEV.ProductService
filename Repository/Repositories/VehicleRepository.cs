@@ -17,7 +17,6 @@ namespace Repository.Repositories
         {
             return await _context.Vehicles
                 .Include(v => v.VehicleParts)
-                .ThenInclude(vp => vp.Part)
                 .FirstOrDefaultAsync(v => v.Id == id && v.IsActive == true);
         }
 
@@ -25,7 +24,6 @@ namespace Repository.Repositories
         {
             return await _context.Vehicles
                 .Include(v => v.VehicleParts)
-                .ThenInclude(vp => vp.Part)
                 .FirstOrDefaultAsync(v => v.Vin == vin && v.IsActive == true);
         }
 
@@ -33,7 +31,6 @@ namespace Repository.Repositories
         {
             return await _context.Vehicles
                 .Include(v => v.VehicleParts)
-                .ThenInclude(vp => vp.Part)
                 .Where(v => v.IsActive == true)
                 .ToListAsync();
         }
@@ -69,7 +66,6 @@ namespace Repository.Repositories
         {
             return await _context.Vehicles
                 .Include(v => v.VehicleParts)
-                .ThenInclude(vp => vp.Part)
                 .Where(v => v.CustomerId == customerId && v.IsActive == true)
                 .ToListAsync();
         }
@@ -78,7 +74,6 @@ namespace Repository.Repositories
         {
             return await _context.Vehicles
                 .Include(v => v.VehicleParts)
-                .ThenInclude(vp => vp.Part)
                 .Where(v => v.ManufactureId == manufactureId && v.IsActive == true)
                 .ToListAsync();
         }
