@@ -112,5 +112,59 @@ namespace OEMEV_ProductService.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpPatch("{id}/service-center")]
+        public async Task<IActionResult> UpdateServiceCenter(long id, [FromBody] long serviceCenterId)
+        {
+            try
+            {
+                await _partInventoryService.UpdateInventoryServiceCenterAsync(id, serviceCenterId);
+                return NoContent();
+            }
+            catch (KeyNotFoundException)
+            {
+                return NotFound();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPatch("{id}/manufacturer")]
+        public async Task<IActionResult> UpdateManufacturer(long id, [FromBody] long manufacturerId)
+        {
+            try
+            {
+                await _partInventoryService.UpdateInventoryManufacturerAsync(id, manufacturerId);
+                return NoContent();
+            }
+            catch (KeyNotFoundException)
+            {
+                return NotFound();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPatch("{id}/location")]
+        public async Task<IActionResult> UpdateLocation(long id, [FromBody] UpdateLocationDto updateLocationDto)
+        {
+            try
+            {
+                await _partInventoryService.UpdateInventoryLocationAsync(id, updateLocationDto.ServiceCenterId, updateLocationDto.ManufacturerId);
+                return NoContent();
+            }
+            catch (KeyNotFoundException)
+            {
+                return NotFound();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

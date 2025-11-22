@@ -30,9 +30,10 @@ namespace Repository.Repositories
 
         public async Task<PartInventory> AddAsync(PartInventory partInventory)
         {
+            partInventory.Id = 0;
             partInventory.CreatedAt = DateTime.UtcNow;
             partInventory.IsActive = true;
-            _context.PartInventories.Add(partInventory);
+            await _context.PartInventories.AddAsync(partInventory);
             await _context.SaveChangesAsync();
             return partInventory;
         }
@@ -41,6 +42,7 @@ namespace Repository.Repositories
         {
             _context.PartInventories.Update(partInventory);
             await _context.SaveChangesAsync();
+
             return partInventory;
         }
 
@@ -71,12 +73,14 @@ namespace Repository.Repositories
                 .ToListAsync();
         }
 
-        public async Task UpdateQuantityAsync(long partInventoryId, int newQuantity)
+        public async Task UpdateInformationAsync(long partInventoryId, int newQuantity)
         {
             var partInventory = await _context.PartInventories.FindAsync(partInventoryId);
             if (partInventory != null && partInventory.IsActive == true)
             {
                 partInventory.Quantity = newQuantity;
+                partInventory.ServiceCenterId = partInventory.ServiceCenterId;
+                partInventory.ManufactureId = partInventory.ManufactureId;
                 await _context.SaveChangesAsync();
             }
         }

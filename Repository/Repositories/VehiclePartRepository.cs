@@ -34,7 +34,7 @@ namespace Repository.Repositories
         {
             vehiclePart.CreatedAt = DateTime.UtcNow;
             vehiclePart.IsActive = true;
-            _context.VehicleParts.Add(vehiclePart);
+            await _context.VehicleParts.AddAsync(vehiclePart);
             await _context.SaveChangesAsync();
             return vehiclePart;
         }

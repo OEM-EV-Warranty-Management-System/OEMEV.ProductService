@@ -30,7 +30,7 @@ namespace Repository.Repositories
         {
             part.CreatedAt = DateTime.UtcNow;
             part.IsActive = true;
-            _context.Parts.Add(part);
+            await _context.Parts.AddAsync(part);
             await _context.SaveChangesAsync();
             return part;
         }

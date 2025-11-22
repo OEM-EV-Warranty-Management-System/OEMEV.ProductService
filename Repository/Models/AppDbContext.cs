@@ -57,14 +57,14 @@ public partial class AppDbContext : DbContext
 
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.CreatedAt).HasColumnName("created_at");
-            entity.Property(e => e.IsActive).HasColumnName("isactive");
+            entity.Property(e => e.IsActive).HasColumnName("is_active");
             entity.Property(e => e.Name)
                 .HasColumnType("character varying")
                 .HasColumnName("name");
             entity.Property(e => e.Type)
                 .HasColumnType("character varying")
                 .HasColumnName("type");
-            entity.Property(e => e.WarrantyMoths).HasColumnName("warranty_moths");
+            entity.Property(e => e.WarrantyMonths).HasColumnName("warranty_months");
         });
 
         modelBuilder.Entity<PartInventory>(entity =>
@@ -126,7 +126,7 @@ public partial class AppDbContext : DbContext
 
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.CreatedAt).HasColumnName("created_at");
-            entity.Property(e => e.IsActive).HasColumnName("isactive");
+            entity.Property(e => e.IsActive).HasColumnName("is_active");
             entity.Property(e => e.PartId).HasColumnName("part_id");
             entity.Property(e => e.SerialNumber)
                 .HasColumnType("character varying")

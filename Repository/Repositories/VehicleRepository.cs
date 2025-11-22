@@ -39,7 +39,7 @@ namespace Repository.Repositories
         {
             vehicle.CreatedAt = DateTime.UtcNow;
             vehicle.IsActive = true;
-            _context.Vehicles.Add(vehicle);
+            await _context.Vehicles.AddAsync(vehicle);
             await _context.SaveChangesAsync();
             return vehicle;
         }

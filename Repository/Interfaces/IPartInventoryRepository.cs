@@ -11,7 +11,7 @@ namespace Repository.Interfaces
         Task<bool> DeleteAsync(long id);
         Task<IEnumerable<PartInventory>> GetByPartIdAsync(long partId);
         Task<IEnumerable<PartInventory>> GetByServiceCenterAsync(long serviceCenterId);
-        Task UpdateQuantityAsync(long partInventoryId, int newQuantity);
+        Task UpdateInformationAsync(long partInventoryId, int newQuantity);
         Task<int> GetTotalQuantityByPartAsync(long partId);
     }
 }

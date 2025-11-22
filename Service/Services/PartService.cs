@@ -36,6 +36,8 @@ namespace Service.Services
             part.IsActive = true;
 
             var createdPart = await _unitOfWork.Parts.AddAsync(part);
+            await _unitOfWork.SaveAsync();
+
             return _mapper.Map<PartDto>(createdPart);
         }
 

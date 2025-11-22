@@ -40,8 +40,25 @@ namespace Service.Services
             inventory.CreatedAt = DateTime.UtcNow;
             inventory.IsActive = true;
 
-            var createdInventory = await _unitOfWork.PartInventories.AddAsync(inventory);
-            return _mapper.Map<PartInventoryDto>(createdInventory);
+            await _unitOfWork.PartInventories.AddAsync(inventory);
+            try
+            {
+                await _unitOfWork.SaveAsync();
+            }
+            catch (Exception ex)
+            {
+                // Đặt Breakpoint (dấu chấm đỏ) tại dòng dưới này:
+                var inner = ex.InnerException;
+                while (inner != null)
+                {
+                    // Xem giá trị của inner.Message
+                    Console.WriteLine(inner.Message);
+                    inner = inner.InnerException;
+                }
+                throw;
+            }
+
+            return _mapper.Map<PartInventoryDto>(inventory);
         }
 
         public async Task<PartInventoryDto> UpdateInventoryAsync(long id, UpdatePartInventoryDto updateInventoryDto)
@@ -51,13 +68,19 @@ namespace Service.Services
                 throw new KeyNotFoundException($"Inventory with ID {id} not found.");
 
             _mapper.Map(updateInventoryDto, existingInventory);
-            var updatedInventory = await _unitOfWork.PartInventories.UpdateAsync(existingInventory);
-            return _mapper.Map<PartInventoryDto>(updatedInventory);
+            await _unitOfWork.PartInventories.UpdateAsync(existingInventory);
+            await _unitOfWork.SaveAsync();
+            return _mapper.Map<PartInventoryDto>(existingInventory);
         }
 
         public async Task<bool> DeleteInventoryAsync(long id)
         {
-            return await _unitOfWork.PartInventories.DeleteAsync(id);
+            var result = await _unitOfWork.PartInventories.DeleteAsync(id);
+            if (result)
+            {
+                await _unitOfWork.SaveAsync();
+            }
+            return result;
         }
 
         public async Task<IEnumerable<PartInventoryDto>> GetInventoryByPartIdAsync(long partId)
@@ -74,12 +97,47 @@ namespace Service.Services
 
         public async Task UpdateInventoryQuantityAsync(long inventoryId, int newQuantity)
         {
-            await _unitOfWork.PartInventories.UpdateQuantityAsync(inventoryId, newQuantity);
+            await _unitOfWork.PartInventories.UpdateInformationAsync(inventoryId, newQuantity); // repository saves
         }
 
         public async Task<int> GetTotalQuantityByPartAsync(long partId)
         {
             return await _unitOfWork.PartInventories.GetTotalQuantityByPartAsync(partId);
+        }
+
+        // Newly implemented patch methods
+        public async Task UpdateInventoryServiceCenterAsync(long inventoryId, long serviceCenterId)
+        {
+            var existingInventory = await _unitOfWork.PartInventories.GetByIdAsync(inventoryId);
+            if (existingInventory == null)
+                throw new KeyNotFoundException($"Inventory with ID {inventoryId} not found.");
+
+            existingInventory.ServiceCenterId = serviceCenterId;
+            await _unitOfWork.PartInventories.UpdateAsync(existingInventory);
+            await _unitOfWork.SaveAsync();
+        }
+
+        public async Task UpdateInventoryManufacturerAsync(long inventoryId, long manufacturerId)
+        {
+            var existingInventory = await _unitOfWork.PartInventories.GetByIdAsync(inventoryId);
+            if (existingInventory == null)
+                throw new KeyNotFoundException($"Inventory with ID {inventoryId} not found.");
+
+            existingInventory.ManufactureId = manufacturerId;
+            await _unitOfWork.PartInventories.UpdateAsync(existingInventory);
+            await _unitOfWork.SaveAsync();
+        }
+
+        public async Task UpdateInventoryLocationAsync(long inventoryId, long serviceCenterId, long manufacturerId)
+        {
+            var existingInventory = await _unitOfWork.PartInventories.GetByIdAsync(inventoryId);
+            if (existingInventory == null)
+                throw new KeyNotFoundException($"Inventory with ID {inventoryId} not found.");
+
+            existingInventory.ServiceCenterId = serviceCenterId;
+            existingInventory.ManufactureId = manufacturerId;
+            await _unitOfWork.PartInventories.UpdateAsync(existingInventory);
+            await _unitOfWork.SaveAsync();
         }
     }
 }

@@ -51,6 +51,8 @@ namespace Service.Services
             vehiclePart.IsActive = true;
 
             var createdVehiclePart = await _unitOfWork.VehicleParts.AddAsync(vehiclePart);
+            await _unitOfWork.SaveAsync();
+
             return _mapper.Map<VehiclePartDto>(createdVehiclePart);
         }
 

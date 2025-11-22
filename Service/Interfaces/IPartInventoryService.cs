@@ -13,5 +13,8 @@ namespace Service.Interfaces
         Task<IEnumerable<PartInventoryDto>> GetInventoryByServiceCenterAsync(long serviceCenterId);
         Task UpdateInventoryQuantityAsync(long inventoryId, int newQuantity);
         Task<int> GetTotalQuantityByPartAsync(long partId);
+        Task UpdateInventoryServiceCenterAsync(long inventoryId, long serviceCenterId);
+        Task UpdateInventoryManufacturerAsync(long inventoryId, long manufacturerId);
+        Task UpdateInventoryLocationAsync(long inventoryId, long serviceCenterId, long manufacturerId);
     }
 }

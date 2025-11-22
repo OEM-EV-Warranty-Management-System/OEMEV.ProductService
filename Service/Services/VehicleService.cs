@@ -47,6 +47,8 @@ namespace Service.Services
             vehicle.IsActive = true;
                 
             var createdVehicle = await _unitOfWork.Vehicles.AddAsync(vehicle);
+            await _unitOfWork.SaveAsync();
+
             return _mapper.Map<VehicleDto>(createdVehicle);
         }
 
@@ -58,6 +60,8 @@ namespace Service.Services
 
             _mapper.Map(updateVehicleDto, existingVehicle);
             var updatedVehicle = await _unitOfWork.Vehicles.UpdateAsync(existingVehicle);
+            await _unitOfWork.SaveAsync();
+
             return _mapper.Map<VehicleDto>(updatedVehicle);
         }
 
